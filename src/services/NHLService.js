@@ -46,6 +46,10 @@ class NHLService {
       `https://statsapi.web.nhl.com/api/v1/people/${id}/stats?stats=statsSingleSeason&season=20192020`
     );
   }
+
+  getStandings() {
+    return axios.get(`https://statsapi.web.nhl.com/api/v1/standings`);
+  }
 }
 
 export default NHLService;
