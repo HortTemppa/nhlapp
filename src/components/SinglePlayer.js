@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNHLService } from "./NHLContext";
 
 import Loading from "./Loading";
+import FieldPlayer from "./FieldPlayer";
+import Goalie from "./Goalie";
 
 import { useParams } from "react-router-dom";
 
-const SinglePlayer = () => {
+const SinglePlayer = ({ id }) => {
   const NHLService = useNHLService();
 
-  const { id } = useParams();
-  console.log("playerID:", id);
+  // const { id } = useParams();
 
   const [player, setPlayer] = useState(null);
   const [playerStats, setPlayerStats] = useState(null);
@@ -26,39 +27,24 @@ const SinglePlayer = () => {
       );
   }, [NHLService, id]);
 
-  console.log("playerInfo:", player);
-  console.log("playerStats", playerStats);
+  console.log("playerID:", playerStats);
 
   return playerStats === null ? (
     <Loading />
   ) : (
-    <div className="content">
+    <div className="player">
       <div className="contentChildren">
         <h1>{player.fullName}</h1>
         <h2>#{player.primaryNumber}</h2>
         <h3>{player.currentTeam.name}</h3>
         <h4>{player.primaryPosition.abbreviation}</h4>
       </div>
-      <div>
-        <table>
-          <p>Season stats</p>
-          <tbody>
-            <tr>
-              <th>GP</th>
-              <th>Points</th>
-              <th>Assists</th>
-              <th>Goals</th>
-              <th>+/-</th>
-            </tr>
-            <tr>
-              <td>{playerStats.stat.games}</td>
-              <td>{playerStats.stat.points}</td>
-              <td>{playerStats.stat.assists}</td>
-              <td>{playerStats.stat.goals}</td>
-              <td>{playerStats.stat.plusMinus}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="contentChidlren">
+        {player.primaryPosition.abbreviation === "G" ? (
+          <Goalie playerStats={playerStats} />
+        ) : (
+          <FieldPlayer playerStats={playerStats} />
+        )}
       </div>
     </div>
   );
