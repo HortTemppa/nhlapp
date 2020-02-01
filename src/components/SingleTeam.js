@@ -5,6 +5,7 @@ import { useParams, Link } from "react-router-dom";
 import Loading from "./Loading";
 import SinglePlayer from "./SinglePlayer";
 import TeamLeaders from "./TeamLeaders";
+import Upcoming from "./Upcoming";
 
 const SingleTeam = () => {
   const NHLService = useNHLService();
@@ -41,25 +42,28 @@ const SingleTeam = () => {
         NHLService.getPlayerStats(player.person.id)
       );
 
-      Promise.all(requests).then(responses => {
-        let lboards = [];
-        responses.forEach((response, i) => {
-          if (response.data.stats[0].splits[0].statj)
-            lboards = lboards.concat([
-              {
-                name: players[i].person.fullName,
-                points: response.data.stats[0].splits[0].stat.points,
-                goals: response.data.stats[0].splits[0].stat.goals,
-                assists: response.data.stats[0].splits[0].stat.assists
+      Promise.all(requests)
+        .then(responses => {
+          let lboards = [];
+          responses.forEach((response, i) => {
+            if (response.data.stats[0].splits[0]) {
+              lboards = lboards.concat([
+                {
+                  name: players[i].person.fullName,
+                  points: response.data.stats[0].splits[0].stat.points,
+                  goals: response.data.stats[0].splits[0].stat.goals,
+                  assists: response.data.stats[0].splits[0].stat.assists
+                }
+              ]);
+              if (i + 1 === players.length) {
+                lboards = lboards.filter(player => player.points !== undefined);
+                lboards.sort((a, b) => parseInt(b.points) - parseInt(a.points));
+                setLeaderboards(lboards);
               }
-            ]);
-          if (lboards.length === players.length) {
-            lboards = lboards.filter(player => player.points !== undefined);
-            lboards.sort((a, b) => parseInt(b.points) - parseInt(a.points));
-            setLeaderboards(lboards);
-          }
-        });
-      });
+            }
+          });
+        })
+        .catch(error => console.log(error, error.message));
     } else return;
   }, [players]);
 
@@ -99,25 +103,7 @@ const SingleTeam = () => {
           <SinglePlayer id={playerId} />
         </div>
         <div>
-          <p>Upcoming Matches</p>
-          <table>
-            <tbody>
-              <tr>
-                <th>Away</th>
-                <th>Home</th>
-                <th>Date</th>
-              </tr>
-              {schedule.map(schedule => {
-                return (
-                  <tr>
-                    <td>{schedule.games[0].teams.away.team.name}</td>
-                    <td>{schedule.games[0].teams.home.team.name}</td>
-                    <td>{schedule.date}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <Upcoming schedule={schedule} />
         </div>
       </div>
     </div>
