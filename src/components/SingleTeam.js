@@ -4,6 +4,7 @@ import { useParams, Link } from "react-router-dom";
 
 import Loading from "./Loading";
 import SinglePlayer from "./SinglePlayer";
+import TeamLeaders from "./TeamLeaders";
 
 const SingleTeam = () => {
   const NHLService = useNHLService();
@@ -40,19 +41,25 @@ const SingleTeam = () => {
         NHLService.getPlayerStats(player.person.id)
       );
 
-      Promise.all(requests).then(responses =>
+      Promise.all(requests).then(responses => {
+        let lboards = [];
         responses.forEach((response, i) => {
-          setLeaderboards(leaderboards => [
-            ...leaderboards,
-            {
-              name: players[i].person.fullName,
-              points: response.data.stats[0].splits[0].stat.points,
-              goals: response.data.stats[0].splits[0].stat.goals,
-              assists: response.data.stats[0].splits[0].stat.assists
-            }
-          ]);
-        })
-      );
+          if (response.data.stats[0].splits[0].statj)
+            lboards = lboards.concat([
+              {
+                name: players[i].person.fullName,
+                points: response.data.stats[0].splits[0].stat.points,
+                goals: response.data.stats[0].splits[0].stat.goals,
+                assists: response.data.stats[0].splits[0].stat.assists
+              }
+            ]);
+          if (lboards.length === players.length) {
+            lboards = lboards.filter(player => player.points !== undefined);
+            lboards.sort((a, b) => parseInt(b.points) - parseInt(a.points));
+            setLeaderboards(lboards);
+          }
+        });
+      });
     } else return;
   }, [players]);
 
@@ -72,6 +79,9 @@ const SingleTeam = () => {
     <div>
       <h1>{team.name}</h1>
       <div className="content">
+        <div>
+          <TeamLeaders leaderboards={leaderboards} />
+        </div>
         <div>
           <select className="dropdown">
             <option>Players</option>
