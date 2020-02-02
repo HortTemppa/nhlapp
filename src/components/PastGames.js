@@ -28,7 +28,7 @@ const PastGames = ({ id }) => {
           </tr>
           {pastGames.map(pastGames => {
             return (
-              <tr>
+              <tr key={pastGames.games[0].gamePk}>
                 <td>{pastGames.games[0].teams.away.team.name}</td>
                 <td>{pastGames.games[0].teams.home.team.name}</td>
                 <td>

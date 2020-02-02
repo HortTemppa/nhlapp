@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNHLService } from "./NHLContext";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import Loading from "./Loading";
 import LeagueStandings from "./LeagueStandings";
@@ -45,8 +45,6 @@ const Home = () => {
   const handleConferenceClick = () => {
     setStandingsState("Conference");
   };
-  //<Link key={team.name} to={`/teams/${team.id}`}></Link>
-  //</Link>
 
   return standings === null ? (
     <Loading />
@@ -63,15 +61,17 @@ const Home = () => {
           );
         })}
       </select>
-      <button type="button" onClick={handleLeagueClick}>
-        League
-      </button>
-      <button type="button" onClick={handleDivisionClick}>
-        Division
-      </button>
-      <button type="button" onClick={handleConferenceClick}>
-        Conference
-      </button>
+      <div className="sortButtons">
+        <button type="button" onClick={handleLeagueClick}>
+          League
+        </button>
+        <button type="button" onClick={handleDivisionClick}>
+          Division
+        </button>
+        <button type="button" onClick={handleConferenceClick}>
+          Conference
+        </button>
+      </div>
       <div className="content">
         {standingsState === "Division" && (
           <DivisionStandings standings={standings} />

@@ -5,12 +5,8 @@ import Loading from "./Loading";
 import FieldPlayer from "./FieldPlayer";
 import Goalie from "./Goalie";
 
-import { useParams } from "react-router-dom";
-
 const SinglePlayer = ({ id }) => {
   const NHLService = useNHLService();
-
-  // const { id } = useParams();
 
   const [player, setPlayer] = useState(null);
   const [playerStats, setPlayerStats] = useState(null);

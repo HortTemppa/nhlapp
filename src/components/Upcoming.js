@@ -13,6 +13,8 @@ const Upcoming = ({ id }) => {
     );
   }, [id, NHLService]);
 
+  console.log(schedule);
+
   return schedule === null ? (
     <Loading />
   ) : (
@@ -27,7 +29,7 @@ const Upcoming = ({ id }) => {
           </tr>
           {schedule.map(schedule => {
             return (
-              <tr>
+              <tr key={schedule.games[0].gamePk}>
                 <td>{schedule.games[0].teams.away.team.name}</td>
                 <td>{schedule.games[0].teams.home.team.name}</td>
                 <td>{schedule.date}</td>
