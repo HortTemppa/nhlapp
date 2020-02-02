@@ -1,32 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useNHLService } from "../components/NHLContext";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import Loading from "./Loading";
 import SinglePlayer from "./SinglePlayer";
 import TeamLeaders from "./TeamLeaders";
 import Upcoming from "./Upcoming";
+import PastGames from "./PastGames";
 
 const SingleTeam = () => {
   const NHLService = useNHLService();
 
   const { id } = useParams();
-  console.log(id);
 
   const [team, setTeam] = useState(null);
   const [players, setPlayers] = useState(null);
-  const [schedule, setSchedule] = useState(null);
   const [playerId, setPlayerId] = useState(null);
-  const [leaderboards, setLeaderboards] = useState([]);
 
   useEffect(() => {
     NHLService.getSingleTeam(id)
       .then(response => setTeam(response.data.teams[0]))
-      .then(() =>
-        NHLService.getTeamSchedule(id).then(response =>
-          setSchedule(response.data.dates)
-        )
-      )
       .then(() =>
         NHLService.getTeamPlayers(id).then(response => {
           setPlayers(response.data.roster);
@@ -35,37 +28,6 @@ const SingleTeam = () => {
       )
       .catch(error => console.log(error));
   }, [NHLService, id]);
-
-  useEffect(() => {
-    if (players) {
-      const requests = players.map(player =>
-        NHLService.getPlayerStats(player.person.id)
-      );
-
-      Promise.all(requests)
-        .then(responses => {
-          let lboards = [];
-          responses.forEach((response, i) => {
-            if (response.data.stats[0].splits[0]) {
-              lboards = lboards.concat([
-                {
-                  name: players[i].person.fullName,
-                  points: response.data.stats[0].splits[0].stat.points,
-                  goals: response.data.stats[0].splits[0].stat.goals,
-                  assists: response.data.stats[0].splits[0].stat.assists
-                }
-              ]);
-              if (i + 1 === players.length) {
-                lboards = lboards.filter(player => player.points !== undefined);
-                lboards.sort((a, b) => parseInt(b.points) - parseInt(a.points));
-                setLeaderboards(lboards);
-              }
-            }
-          });
-        })
-        .catch(error => console.log(error, error.message));
-    } else return;
-  }, [players]);
 
   const handlePlayerClick = player => () => {
     setPlayerId(player);
@@ -78,7 +40,7 @@ const SingleTeam = () => {
       <h1>{team.name}</h1>
       <div className="content">
         <div>
-          <TeamLeaders leaderboards={leaderboards} />
+          <TeamLeaders players={players} />
         </div>
         <div>
           <select className="dropdown">
@@ -97,7 +59,10 @@ const SingleTeam = () => {
           <SinglePlayer id={playerId} />
         </div>
         <div>
-          <Upcoming schedule={schedule} />
+          <Upcoming id={id} />
+        </div>
+        <div>
+          <PastGames id={id} />
         </div>
       </div>
     </div>

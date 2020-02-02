@@ -18,17 +18,8 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route exact path="/teams">
-            <Teams />
-          </Route>
           <Route path="/teams/:id">
             <SingleTeam />
-          </Route>
-          <Route exact path="/players/">
-            <Players />
-          </Route>
-          <Route path="/players/:id">
-            <SinglePlayer />
           </Route>
         </Switch>
       </Router>
