@@ -3,6 +3,9 @@ import { useNHLService } from "./NHLContext";
 import { Link, useHistory } from "react-router-dom";
 
 import Loading from "./Loading";
+import LeagueStandings from "./LeagueStandings";
+import DivisionStandings from "./DivisionStandings";
+import ConferenceStandings from "./ConferenceStandings";
 
 const Home = () => {
   const NHLService = useNHLService();
@@ -10,6 +13,7 @@ const Home = () => {
 
   const [teams, setTeams] = useState(null);
   const [standings, setStandings] = useState(null);
+  const [standingsState, setStandingsState] = useState("Division");
 
   useEffect(() => {
     NHLService.getTeams()
@@ -30,6 +34,17 @@ const Home = () => {
     history.push(`/teams/${teams[i].id}`);
   };
 
+  const handleLeagueClick = () => {
+    setStandingsState("League");
+  };
+
+  const handleDivisionClick = () => {
+    setStandingsState("Division");
+  };
+
+  const handleConferenceClick = () => {
+    setStandingsState("Conference");
+  };
   //<Link key={team.name} to={`/teams/${team.id}`}></Link>
   //</Link>
 
@@ -48,131 +63,25 @@ const Home = () => {
           );
         })}
       </select>
+      <button type="button" onClick={handleLeagueClick}>
+        League
+      </button>
+      <button type="button" onClick={handleDivisionClick}>
+        Division
+      </button>
+      <button type="button" onClick={handleConferenceClick}>
+        Conference
+      </button>
       <div className="content">
-        <h3>Metropolitan</h3>
-        <h3>Atlantic</h3>
-        <table>
-          <tbody>
-            <tr>
-              <th>#</th>
-              <th>Team</th>
-              <th>Points</th>
-              <th>GP</th>
-              <th>W</th>
-              <th>L</th>
-              <th>OT</th>
-              <th>GF</th>
-              <th>GA</th>
-            </tr>
-            {standings[0].teamRecords.map(team => {
-              return (
-                <tr>
-                  <td>{team.divisionRank}</td>
-                  <td>{team.team.name}</td>
-                  <td>{team.points}</td>
-                  <td>{team.gamesPlayed}</td>
-                  <td>{team.leagueRecord.wins}</td>
-                  <td>{team.leagueRecord.losses}</td>
-                  <td>{team.leagueRecord.ot}</td>
-                  <td>{team.goalsScored}</td>
-                  <td>{team.goalsAgainst}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <table>
-          <tbody>
-            <tr>
-              <th>#</th>
-              <th>Team</th>
-              <th>GP</th>
-              <th>Points</th>
-              <th>W</th>
-              <th>L</th>
-              <th>OTL</th>
-              <th>GF</th>
-              <th>GA</th>
-            </tr>
-            {standings[1].teamRecords.map(team => {
-              return (
-                <tr>
-                  <td>{team.divisionRank}</td>
-                  <td>{team.team.name}</td>
-                  <td>{team.points}</td>
-                  <td>{team.gamesPlayed}</td>
-                  <td>{team.leagueRecord.wins}</td>
-                  <td>{team.leagueRecord.losses}</td>
-                  <td>{team.leagueRecord.ot}</td>
-                  <td>{team.goalsScored}</td>
-                  <td>{team.goalsAgainst}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <h3>Central</h3>
-        <h3>Pacific</h3>
-        <table>
-          <tbody>
-            <tr>
-              <th>#</th>
-              <th>Team</th>
-              <th>GP</th>
-              <th>Points</th>
-              <th>W</th>
-              <th>L</th>
-              <th>OTL</th>
-              <th>GF</th>
-              <th>GA</th>
-            </tr>
-            {standings[2].teamRecords.map(team => {
-              return (
-                <tr>
-                  <td>{team.divisionRank}</td>
-                  <td>{team.team.name}</td>
-                  <td>{team.points}</td>
-                  <td>{team.gamesPlayed}</td>
-                  <td>{team.leagueRecord.wins}</td>
-                  <td>{team.leagueRecord.losses}</td>
-                  <td>{team.leagueRecord.ot}</td>
-                  <td>{team.goalsScored}</td>
-                  <td>{team.goalsAgainst}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <table>
-          <tbody>
-            <tr>
-              <th>#</th>
-              <th>Team</th>
-              <th>GP</th>
-              <th>Points</th>
-              <th>W</th>
-              <th>L</th>
-              <th>OTL</th>
-              <th>GF</th>
-              <th>GA</th>
-            </tr>
-            {standings[3].teamRecords.map(team => {
-              return (
-                <tr>
-                  <td>{team.divisionRank}</td>
-                  <td>{team.team.name}</td>
-                  <td>{team.points}</td>
-                  <td>{team.gamesPlayed}</td>
-                  <td>{team.leagueRecord.wins}</td>
-                  <td>{team.leagueRecord.losses}</td>
-                  <td>{team.leagueRecord.ot}</td>
-                  <td>{team.goalsScored}</td>
-                  <td>{team.goalsAgainst}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        {standingsState === "Division" && (
+          <DivisionStandings standings={standings} />
+        )}
+        {standingsState === "League" && (
+          <LeagueStandings standings={standings} />
+        )}
+        {standingsState === "Conference" && (
+          <ConferenceStandings standings={standings} />
+        )}
       </div>
     </div>
   );

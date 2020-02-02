@@ -67,12 +67,6 @@ const SingleTeam = () => {
     } else return;
   }, [players]);
 
-  console.log(("leaderboards:", leaderboards));
-  console.log("playerId:", playerId);
-  console.log("players:", players);
-  console.log("team:", team);
-  console.log(("schedule:", schedule));
-
   const handlePlayerClick = player => () => {
     setPlayerId(player);
   };
