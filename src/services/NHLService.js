@@ -25,7 +25,19 @@ class NHLService {
       .add(10, "days")
       .format("MM/DD/YYYY");
 
-    console.log(`startDate=${startDate}#endDate=${endDate}`);
+    return axios.get(
+      `https://statsapi.web.nhl.com/api/v1/schedule?teamId=${id}&startDate=${startDate}&endDate=${endDate}`
+    );
+  }
+
+  getPastGames(id) {
+    let startDate = moment()
+      .subtract(10, "days")
+      .format("MM/DD/YYYY");
+
+    let endDate = moment()
+      .subtract(1, "days")
+      .format("MM/DD/YYYY");
 
     return axios.get(
       `https://statsapi.web.nhl.com/api/v1/schedule?teamId=${id}&startDate=${startDate}&endDate=${endDate}`
@@ -41,7 +53,6 @@ class NHLService {
   }
 
   getPlayerStats(id) {
-    console.log("playerId axios:", id);
     return axios.get(
       `https://statsapi.web.nhl.com/api/v1/people/${id}/stats?stats=statsSingleSeason&season=20192020`
     );

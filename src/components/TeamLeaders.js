@@ -1,8 +1,44 @@
 import React, { useEffect, useState } from "react";
+import { useNHLService } from "./NHLContext";
 
 import Loading from "./Loading";
 
-const TeamLeaders = ({ leaderboards, sort }) => {
+const TeamLeaders = ({ players }) => {
+  const NHLService = useNHLService();
+
+  const [leaderboards, setLeaderboards] = useState([]);
+
+  useEffect(() => {
+    if (players) {
+      const requests = players.map(player =>
+        NHLService.getPlayerStats(player.person.id)
+      );
+
+      Promise.all(requests)
+        .then(responses => {
+          let lboards = [];
+          responses.forEach((response, i) => {
+            if (response.data.stats[0].splits[0]) {
+              lboards = lboards.concat([
+                {
+                  name: players[i].person.fullName,
+                  points: response.data.stats[0].splits[0].stat.points,
+                  goals: response.data.stats[0].splits[0].stat.goals,
+                  assists: response.data.stats[0].splits[0].stat.assists
+                }
+              ]);
+              if (i + 1 === players.length) {
+                lboards = lboards.filter(player => player.points !== undefined);
+                lboards.sort((a, b) => parseInt(b.points) - parseInt(a.points));
+                setLeaderboards(lboards);
+              }
+            }
+          });
+        })
+        .catch(error => console.log(error.message));
+    } else return;
+  }, [players]);
+
   return leaderboards.length ? (
     <>
       <h3>Team Leaders</h3>
