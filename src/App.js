@@ -1,6 +1,11 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 
 import Home from "./components/Home";
 import SingleTeam from "./components/SingleTeam";
@@ -15,9 +20,10 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/teams/:id">
+          <Route exact path="/teams/:id">
             <SingleTeam />
           </Route>
+          <Redirect from="*" to="/" />
         </Switch>
       </Router>
     </NHLProvider>

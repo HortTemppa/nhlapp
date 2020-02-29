@@ -3,7 +3,7 @@ import React from "react";
 const FieldPlayer = ({ playerStats }) => {
   return (
     <>
-      <p>Season stats</p>
+      <h4>Season stats</h4>
       <table>
         <tbody>
           <tr>

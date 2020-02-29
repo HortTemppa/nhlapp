@@ -17,18 +17,20 @@ const SinglePlayer = ({ id }) => {
       .then(() =>
         NHLService.getPlayerStats(id)
           .then(response => {
-            setPlayerStats(response.data.stats[0].splits[0]);
+            if (response.data.stats[0].splits[0]) {
+              setPlayerStats(response.data.stats[0].splits[0]);
+            }
           })
           .catch(error => console.log(error.message))
       );
   }, [NHLService, id]);
 
-  console.log("playerID:", playerStats);
+  console.log("playerID:", id);
 
   return playerStats === null ? (
     <Loading />
   ) : (
-    <div className="player">
+    <>
       <div className="contentChildren">
         <h1>{player.fullName}</h1>
         <h2>#{player.primaryNumber}</h2>
@@ -42,7 +44,7 @@ const SinglePlayer = ({ id }) => {
           <FieldPlayer playerStats={playerStats} />
         )}
       </div>
-    </div>
+    </>
   );
 };
 export default SinglePlayer;

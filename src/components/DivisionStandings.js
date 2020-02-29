@@ -1,9 +1,10 @@
 import React from "react";
+import uuid from "uuid";
 
-const ConferenceStandings = ({ standings }) => {
-  return standings.map((team, i) => {
+const DivisionStandings = ({ standings }) => {
+  return standings.map(team => {
     return (
-      <div className="contentChildren">
+      <div key={uuid.v4()} className="contentChildren">
         {standings.length === 4 && <h3> {team.division.name}</h3>}
         <table>
           <tbody>
@@ -19,7 +20,7 @@ const ConferenceStandings = ({ standings }) => {
               <th>GA</th>
             </tr>
             {team.teamRecords.map(teamRecords => (
-              <tr>
+              <tr key={teamRecords.team.id}>
                 <td>{teamRecords.divisionRank}</td>
                 <td>{teamRecords.team.name}</td>
                 <td>{teamRecords.points}</td>
@@ -38,4 +39,4 @@ const ConferenceStandings = ({ standings }) => {
   });
 };
 
-export default ConferenceStandings;
+export default DivisionStandings;
