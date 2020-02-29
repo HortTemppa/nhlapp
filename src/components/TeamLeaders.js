@@ -22,9 +22,11 @@ const TeamLeaders = ({ players }) => {
               lboards = lboards.concat([
                 {
                   name: players[i].person.fullName,
+                  gamesPlayed: response.data.stats[0].splits[0].stat.games,
                   points: response.data.stats[0].splits[0].stat.points,
                   goals: response.data.stats[0].splits[0].stat.goals,
-                  assists: response.data.stats[0].splits[0].stat.assists
+                  assists: response.data.stats[0].splits[0].stat.assists,
+                  plusMinus: response.data.stats[0].splits[0].stat.plusMinus
                 }
               ]);
               if (i + 1 === players.length) {
@@ -37,7 +39,17 @@ const TeamLeaders = ({ players }) => {
         })
         .catch(error => console.log(error.message));
     } else return;
-  }, [players]);
+  }, [players, NHLService]);
+
+  const handleSortClickFactory = sortBy => () => {
+    const lboards = [...leaderboards];
+
+    console.log(sortBy);
+
+    lboards.sort((a, b) => b[sortBy] - a[sortBy]);
+
+    setLeaderboards(lboards);
+  };
 
   return leaderboards.length ? (
     <>
@@ -46,18 +58,22 @@ const TeamLeaders = ({ players }) => {
         <tbody>
           <tr>
             <th>Name</th>
-            <th>Points</th>
-            <th>Goals</th>
-            <th>Assists</th>
+            <th>GP</th>
+            <th onClick={handleSortClickFactory("points")}>Points</th>
+            <th onClick={handleSortClickFactory("goals")}>Goals</th>
+            <th onClick={handleSortClickFactory("assists")}>Assists</th>
+            <th onClick={handleSortClickFactory("plusMinus")}>+/-</th>
           </tr>
 
           {leaderboards.slice(0, 5).map(player => {
             return (
-              <tr>
+              <tr key={player.name}>
                 <td>{player.name}</td>
+                <td>{player.gamesPlayed}</td>
                 <td>{player.points}</td>
                 <td>{player.goals}</td>
                 <td>{player.assists}</td>
+                <td>{player.plusMinus}</td>
               </tr>
             );
           })}

@@ -20,6 +20,24 @@ tr:hover {
   background-color: bisque;
 }
 
+button {
+  font-size: 20px;
+  margin-left: 10px;
+  background-color: rgb(244, 203, 251);
+  padding: 5px 10px 5px 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0.3px 0.3px rgba(0, 0, 0, 0.105),
+    0 0.8px 0.7px rgba(0, 0, 0, 0.155), 0 1.5px 1.3px rgba(0, 0, 0, 0.193),
+    0 2.4px 2.1px rgba(0, 0, 0, 0.227), 0 4px 3.4px rgba(0, 0, 0, 0.262),
+    0 6.9px 6px rgba(0, 0, 0, 0.306), 0 15px 13px rgba(0, 0, 0, 0.39);
+}
+
+button:hover {
+  background-color: rgb(168, 137, 173);
+  cursor: pointer;
+}
+
 table {
   margin-right: auto;
   margin-left: auto;
@@ -76,4 +94,8 @@ h4 {
   grid-template-columns: 50% 50%;
   align-content: center;
   padding: 10px;
+}
+
+.sortButtons {
+  text-align: center;
 }
