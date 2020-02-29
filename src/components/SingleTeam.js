@@ -39,10 +39,10 @@ const SingleTeam = () => {
     <div>
       <h1>{team.name}</h1>
       <div className="content">
-        <div>
+        <div className="contentChildren">
           <TeamLeaders players={players} />
         </div>
-        <div>
+        <div className="contentChildren">
           <select className="dropdown">
             <option>Players</option>
             {players.map(player => {
@@ -58,10 +58,10 @@ const SingleTeam = () => {
           </select>
           <SinglePlayer id={playerId} />
         </div>
-        <div>
+        <div className="contentChildren">
           <Upcoming id={id} />
         </div>
-        <div>
+        <div className="contentChildren">
           <PastGames id={id} />
         </div>
       </div>

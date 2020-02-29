@@ -50,17 +50,22 @@ const Home = () => {
     <Loading />
   ) : (
     <div>
-      <h1>NHL Stats</h1>
-      <select className="dropdown">
-        <option>Teams</option>
-        {teams.map((team, i) => {
-          return (
-            <option key={team.name} onClick={handleTeamClickFactory(i)}>
-              {team.name}
-            </option>
-          );
-        })}
-      </select>
+      <div>
+        <select>
+          <option>Teams</option>
+          {teams.map((team, i) => {
+            return (
+              <option key={team.name} onClick={handleTeamClickFactory(i)}>
+                {team.name}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <div className="headerContent">
+        <img className="header" alt="puck" src="./puck.png" width="10%"></img>
+        <h1 className="header">NHL Stats</h1>
+      </div>
       <div className="sortButtons">
         <button type="button" onClick={handleLeagueClick}>
           League
