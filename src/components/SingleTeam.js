@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNHLService } from "../components/NHLContext";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 import Loading from "./Loading";
 import SinglePlayer from "./SinglePlayer";
@@ -12,20 +12,28 @@ const SingleTeam = () => {
   const NHLService = useNHLService();
 
   const { id } = useParams();
+  const history = useHistory();
 
   const [team, setTeam] = useState(null);
   const [players, setPlayers] = useState(null);
   const [playerId, setPlayerId] = useState(null);
+  const [teams, setTeams] = useState(null)
 
   useEffect(() => {
     NHLService.getSingleTeam(id)
       .then(response => setTeam(response.data.teams[0]))
+      .then(() => NHLService.getTeams()
+      .then(data => {
+        setTeams(data.data.teams);
+        console.log(data);
+      }))
       .then(() =>
         NHLService.getTeamPlayers(id).then(response => {
           setPlayers(response.data.roster);
           setPlayerId(response.data.roster[0].person.id);
         })
       )
+      
       .catch(error => console.log(error));
   }, [NHLService, id]);
 
@@ -33,10 +41,26 @@ const SingleTeam = () => {
     setPlayerId(player);
   };
 
+  const handleTeamClickFactory = i => () => {
+    history.push(`/teams/${teams[i].id}`);
+  };
+
   return playerId === null ? (
     <Loading />
   ) : (
     <div>
+<div className = 'custom-select'>
+        <select>
+          <option>Teams</option>
+          {teams.map((team, i) => {
+            return (
+              <option key={team.name} onClick={handleTeamClickFactory(i)}>
+                {team.name}
+              </option>
+            );
+          })}
+        </select>
+      </div>
       <h1>{team.name}</h1>
       <div className="content">
         <div className="contentChildren">

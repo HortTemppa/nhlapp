@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 
 class NHLService {
   constructor() {
@@ -8,6 +9,10 @@ class NHLService {
 
   clearData() {
     this.teams = [];
+  }
+
+  location(){
+    return useLocation();
   }
 
   getTeams() {

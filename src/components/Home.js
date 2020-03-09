@@ -50,7 +50,7 @@ const Home = () => {
     <Loading />
   ) : (
     <div>
-      <div>
+      <div className = 'custom-select'>
         <select>
           <option>Teams</option>
           {teams.map((team, i) => {

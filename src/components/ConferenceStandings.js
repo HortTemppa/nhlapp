@@ -27,7 +27,7 @@ const ConferenceStandings = ({ standings }) => {
               <th>GA</th>
             </tr>
             {easternStandings.map((standings, i) => (
-              <tr>
+              <tr key = {i+1}>
                 <td>{i + 1}</td>
                 <td>{standings.team.name}</td>
                 <td>{standings.points}</td>
@@ -58,7 +58,7 @@ const ConferenceStandings = ({ standings }) => {
               <th>GA</th>
             </tr>
             {westernStandings.map((standings, i) => (
-              <tr>
+              <tr key = {i+1}>
                 <td>{i + 1}</td>
                 <td>{standings.team.name}</td>
                 <td>{standings.points}</td>

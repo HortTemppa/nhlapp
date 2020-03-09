@@ -75,6 +75,11 @@ h4 {
   line-height: 15px;
 }
 
+.Loader{
+  text-align: center;
+  margin-top: 20px;
+}
+
 .dropdown {
   width: 50%;
   height: 40px;
@@ -120,8 +125,8 @@ h4 {
 
 .custom-select {
   position: fixed;
-  margin-left: 25px;
-  margin-top: 25px;
+  left: 25px;
+  top: 25px;
 }
 
 .player {
@@ -132,6 +137,26 @@ h4 {
 
 .sortButtons {
   text-align: center;
+}
+
+.fade-enter{
+  opacity: 0
+}
+
+.fade-enter.fade-enter-active{
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+  transition-delay: 100ms;
+}
+
+.fade-exit{
+  opacity: 1
+}
+
+.fade-exit.fade-exit-active{
+  opacity: 0;
+  transition: opacity 300ms ease-in;
+
 }
 
 @media only screen and (max-width: 800px) {
