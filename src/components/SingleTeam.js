@@ -41,21 +41,26 @@ const SingleTeam = () => {
     setPlayerId(player);
   };
 
-  const handleTeamClickFactory = i => () => {
-    history.push(`/teams/${teams[i].id}`);
+  const handleTeamSelect = event => {
+    const id = event.target.value;
+    if (id) {
+      history.push(`/teams/${id}`);
+    } else {
+      history.push('/');
+    }
   };
 
   return playerId === null ? (
     <Loading />
   ) : (
     <div>
-<div className = 'custom-select'>
-        <select>
-          <option>Teams</option>
-          {teams.map((team, i) => {
+      <div className = 'custom-select'>
+        <select onChange={handleTeamSelect} value={id}>
+          <option value="">All teams</option>
+          {teams.map(({name, id}, i) => {
             return (
-              <option key={team.name} onClick={handleTeamClickFactory(i)}>
-                {team.name}
+              <option key={name} value={id}>
+                {name}
               </option>
             );
           })}
