@@ -56,6 +56,7 @@ const Home = () => {
           <option>Teams</option>
           {teams.map(({name, id}, i) => {
             return (
+              /* Works on Firefox, but not on Chrome. */
               <option key={name} value={id}>
                 {name}
               </option>
