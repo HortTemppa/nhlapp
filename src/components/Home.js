@@ -30,8 +30,9 @@ const Home = () => {
 
   console.log(standings);
 
-  const handleTeamClickFactory = i => () => {
-    history.push(`/teams/${teams[i].id}`);
+  const handleTeamSelect = event => {
+    const id = event.target.value;
+    history.push(`/teams/${id}`);
   };
 
   const handleLeagueClick = () => {
@@ -51,12 +52,13 @@ const Home = () => {
   ) : (
     <div>
       <div className = 'custom-select'>
-        <select>
+        <select onChange={handleTeamSelect}>
           <option>Teams</option>
-          {teams.map((team, i) => {
+          {teams.map(({name, id}, i) => {
             return (
-              <option key={team.name} onClick={handleTeamClickFactory(i)}>
-                {team.name}
+              /* Works on Firefox, but not on Chrome. */
+              <option key={name} value={id}>
+                {name}
               </option>
             );
           })}
